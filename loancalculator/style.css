@@ -1,0 +1,4 @@
+/* Initially hide loader and results div */
+#loading, #results {
+  display: none;
+}
