@@ -15,7 +15,7 @@ E. Notify player of number of attempts remaining upon failed attempts before las
 // Game values
 let min = 1,
   max = 10,
-  winningNum = 2,
+  winningNum = getRandomNum(min, max),
   guessesLeft = 3;
 
 // UI Elements
@@ -29,6 +29,13 @@ const gameDiv = document.querySelector("#game"),
 // Assign UI min and max numbers
 minNum.textContent = min;
 maxNum.textContent = max;
+
+// Play again event listener
+gameDiv.addEventListener("mousedown", function (e) {
+  if (e.target.className === "play-again") {
+    window.location.reload();
+  }
+});
 
 // Listen for user guess submission
 submitBtn.addEventListener("click", function () {
@@ -80,6 +87,15 @@ function gameOver(won, msg) {
   // Set text color
   feedback.style.color = color;
 
+  // Play again?
+  submitBtn.value = "Play Again";
+  submitBtn.className += "play-again";
+
+}
+
+// Get Random Number (randomised btw passed min and max args)
+function getRandomNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 // Give Feedback
