@@ -57,7 +57,52 @@ class UI {
   }
 }
 
+// Local Storage Class
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem("books") === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem("books"));
+    }
+    return books;
+  }
+
+  static displayBooks() {
+    const books = Store.getBooks();
+
+    books.forEach(function(book) {
+      const ui = new UI();
+      ui.addBookToList(book);
+    });
+  }
+
+  static addBook(book) {
+    const books = Store.getBooks();
+
+    books.push(book);
+
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+
+  static removeBookFromLS(isbn) {
+    const books = Store.getBooks();
+
+    books.forEach(function(book, index) {
+      if (book.isbn === isbn) {
+        books.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem("books", JSON.stringify(books));
+  }
+}
+
 // EVENT LISTENERS
+
+// Display book event listener
+document.addEventListener("DOMContentLoaded", Store.displayBooks());
 
 // Add book event listener
 document.getElementById("book-form").addEventListener("submit", function(e) {
@@ -71,7 +116,6 @@ document.getElementById("book-form").addEventListener("submit", function(e) {
 
   // Instantiate UI
   const ui = new UI();
-  console.log(ui);
 
   // Validation before submission
   if (title === "" || author === "" || isbn === "") {
@@ -80,6 +124,9 @@ document.getElementById("book-form").addEventListener("submit", function(e) {
   } else {
     // Add book to list
     ui.addBookToList(book);
+
+    // Add to Local Storage
+    Store.addBook(book);
     // Success alert
     ui.showAlert("Book added successfully", "success");
 
@@ -96,6 +143,10 @@ document.getElementById("book-list").addEventListener("click", function(e) {
   const ui = new UI();
   // Delete book
   ui.deleteBook(e.target);
+  // Remove from local storage
+  Store.removeBookFromLS(
+    e.target.parentElement.previousElementSibling.textContent
+  );
   // Show delete alert
   ui.showAlert("Book removed", "success");
 
