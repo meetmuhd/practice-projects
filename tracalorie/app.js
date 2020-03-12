@@ -201,7 +201,7 @@ const AppController = (function (ItemController, UIController) {
     document.querySelector(UISelectors.addBtn).addEventListener("click", itemAddSubmit);
 
     // Edit icon click event
-    document.querySelector(UISelectors.itemList).addEventListener("click", itemUpdateSubmit);
+    document.querySelector(UISelectors.itemList).addEventListener("click", itemEditClick);
   }
 
   // Add item submit
@@ -231,8 +231,8 @@ const AppController = (function (ItemController, UIController) {
     e.preventDefault();
   }
 
-  // Update item submit
-  const itemUpdateSubmit = function (e) {
+  // Edit item click
+  const itemEditClick = function (e) {
     if (e.target.classList.contains("edit-item")) {
       // Get list item id
       const listId = e.target.parentNode.parentNode.id;
