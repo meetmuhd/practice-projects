@@ -249,6 +249,9 @@ const AppController = (function (ItemController, UIController) {
 
     // Update item event
     document.querySelector(UISelectors.updateBtn).addEventListener("click", itemUpdateSubmit);
+
+    // Back button event
+    document.querySelector(UISelectors.backBtn).addEventListener("click", UIController.clearEditState);
   }
 
   // Add item submit
