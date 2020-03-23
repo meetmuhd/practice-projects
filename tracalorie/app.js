@@ -4,9 +4,10 @@ const StorageController = (function () {
   // Public methods
   return {
     storeItem: function (newItem) {
-      let items = [];
+      let items;
       // Check for items in local storage
       if (localStorage.getItem("items") === null) {
+        items = [];
         // Push new item
         items.push(newItem);
         // Set local storage
@@ -21,6 +22,18 @@ const StorageController = (function () {
         // Re-assign to local storage
         localStorage.setItem("items", JSON.stringify(items));
       }
+    },
+
+    getItemsFromStorage: function () {
+      let items;
+
+      if (localStorage.getItem("items") === null) {
+        items = [];
+      } else {
+        items = JSON.parse(localStorage.getItem("items"));
+      }
+
+      return items;
     }
   }
 })();
@@ -36,11 +49,12 @@ const ItemController = (function () {
 
   // Data Structure / State
   const data = {
-    items: [
-      // { id: 0, name: "Steak Dinner", calories: 1200 },
-      // { id: 1, name: "Cookie", calories: 400 },
-      // { id: 2, name: "Eggs", calories: 300 }
-    ],
+    // items: [
+    //   // { id: 0, name: "Steak Dinner", calories: 1200 },
+    //   // { id: 1, name: "Cookie", calories: 400 },
+    //   // { id: 2, name: "Eggs", calories: 300 }
+    // ],
+    items: StorageController.getItemsFromStorage(),
     currentItem: null,
     totalCalories: 0
   }
