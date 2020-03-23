@@ -34,6 +34,18 @@ const StorageController = (function () {
       }
 
       return items;
+    },
+
+    updateItemStorage: function (updatedItem) {
+      let items = JSON.parse(localStorage.getItem("items"));
+
+      items.forEach((item, index) => {
+        if (updatedItem.id === item.id) {
+          items.splice(index, 1, updatedItem);
+        }
+      });
+      // Re-assign to local storage
+      localStorage.setItem("items", JSON.stringify(items));
     }
   }
 })();
@@ -404,6 +416,9 @@ const AppController = (function (ItemController, StorageController, UIController
 
     // Add total calories to UI
     UIController.showTotalCalories(totalCalories);
+
+    // Update local storage
+    StorageController.updateItemStorage(updatedItem);
 
     UIController.clearEditState();
 
