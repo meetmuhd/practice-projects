@@ -1,4 +1,29 @@
 // Storage Controller
+const StorageController = (function () {
+
+  // Public methods
+  return {
+    storeItem: function (newItem) {
+      let items = [];
+      // Check for items in local storage
+      if (localStorage.getItem("items") === null) {
+        // Push new item
+        items.push(newItem);
+        // Set local storage
+        localStorage.setItem("items", JSON.stringify(items));
+      } else {
+        // Retrieve existing items in local storage
+        items = JSON.parse(localStorage.getItem("items"));
+
+        // Push new item(s)
+        items.push(newItem);
+
+        // Re-assign to local storage
+        localStorage.setItem("items", JSON.stringify(items));
+      }
+    }
+  }
+})();
 
 // Item Controller
 const ItemController = (function () {
@@ -259,7 +284,7 @@ const UIController = (function () {
 
 
 // App Controller
-const AppController = (function (ItemController, UIController) {
+const AppController = (function (ItemController, StorageController, UIController) {
 
   // Load event listeners
   const loadEventListeners = function () {
@@ -312,6 +337,9 @@ const AppController = (function (ItemController, UIController) {
 
       // Add total calories to UI
       UIController.showTotalCalories(totalCalories);
+
+      // Store in local storage
+      StorageController.storeItem(newItem);
 
       // Clear input fields
       UIController.clearInput();
@@ -437,7 +465,7 @@ const AppController = (function (ItemController, UIController) {
     }
   }
 
-})(ItemController, UIController);
+})(ItemController, StorageController, UIController);
 
 // Initialise App
 AppController.init();
