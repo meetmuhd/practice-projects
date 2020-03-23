@@ -58,6 +58,10 @@ const StorageController = (function () {
       });
       // Re-assign to local storage
       localStorage.setItem("items", JSON.stringify(items));
+    },
+
+    clearItemsFromStorage: function () {
+      localStorage.removeItem("items");
     }
   }
 })();
@@ -475,6 +479,9 @@ const AppController = (function (ItemController, StorageController, UIController
 
     // Remove from UI
     UIController.removeItems();
+
+    // Clear from local storage
+    StorageController.clearItemsFromStorage();
 
     // Hide UL
     UIController.hideList();
